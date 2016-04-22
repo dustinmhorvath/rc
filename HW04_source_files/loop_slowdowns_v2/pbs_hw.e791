@@ -1,0 +1,13 @@
+Inizio/MAP Linux Release 5.4(0.0)
+Copyright 2002, SRC Computers, LLC  All Rights Reserved.
+error (Inizio, #0157): A declaration may not appear after a statement (ex_loop_slowdowns.mc: 26)
+error (Inizio, #0157): A declaration may not appear after a statement (ex_loop_slowdowns.mc: 27)
+error (Inizio, #0157): A declaration may not appear after a statement (ex_loop_slowdowns.mc: 41)
+error (Inizio, #0157): A declaration may not appear after a statement (ex_loop_slowdowns.mc: 42)
+error (Inizio, #0155): Statement must be preceded by #pragma src section (ex_loop_slowdowns.mc: 50)
+error (Inizio, #0155): Statement must be preceded by #pragma src section (ex_loop_slowdowns.mc: 51)
+Inizio/MAP Linux Release 5.4(0.0): compilation completed with severe errors
+error(mcc/mftn): command '/opt/srcci/carte54/bin/srccc -srcinfopath /opt/srcci/carte54/lib/macros/map_m/carte.info:/opt/srcci/carte54/lib/macros/map_m/src_ieee_v1.info -DCARTE_EX_MODE_HW -I. -I/opt/srcci/carte54/include -I/opt/srcci/carte54/include/src7 -Mvect=wrp -maptarget map_m -I/opt/srcci/carte54/include -D_STDIO_H -DMAPM -chip StratixIV -machine src7 -V -O4 ex_loop_slowdowns.mc' returned error code
+make[1]: *** [ex_loop_slowdowns_wrp.c] Error 1
+make: *** [hw] Error 2
+qdel: Unauthorized Request  791.bponk1ws.srccomp.dmz

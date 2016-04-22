@@ -1,0 +1,75 @@
+-- Nonstandard AppRules are being used
+-- MAKIN: /opt/srcci/comp/lib/AppRules.make
+make execution_mode=hw 
+-- Nonstandard AppRules are being used
+-- MAKIN: /opt/srcci/comp/lib/AppRules.make
+make[1]: Entering directory `/export/KU/kuclass05/rc/HW04_source_files/loop_slowdowns_v3'
+mcc -log  -macropath /opt/srcci/carte54/lib/macros -srcinfopath /opt/srcci/carte54/lib/macros/map_m/carte.info:/opt/srcci/carte54/lib/macros/map_m/src_ieee_v1.info -maptarget map_m     -DCARTE_EX_MODE_HW -I .  -I /opt/srcci/carte54/include -I /opt/srcci/carte54/include/src7  ex_loop_slowdowns.mc
+
+Inizio Release 
+Copyright 2002, SRC Computers, LLC  All Rights Reserved.
+
+######################################################################
+##################        INNER LOOP SUMMARY      ####################
+loop on line 33:
+    clocks per iteration:    1
+    pipeline depth:         29
+######################################################################
+
+there is already a 'ex_loop_slowdowns_par' directory from a previous compile
+  dir 'ex_loop_slowdowns_par1' will be used instead
+there is already a 'ex_loop_slowdowns_par1' directory from a previous compile
+  it is being overwritten
+ Setting 64-bit Quartus compilation OPTION
+quartus compile 64 bit...
+quartus map 64 bit...
+quartus cdb 64 bit...
+quartus fit 64 bit...
+quartus asm 64 bit...
+quartus sta 64 bit...
+quartus cpf 64 bit...
+Critical Warning (332148): Timing requirements not met
+
+######################################################################
+###############        PLACE AND ROUTE SUMMARY    ####################
+Registers:                          32,031 / 424,960 ( 8 % )
+Logic utilization:                  37,765 / 424,960 ( 9 % )
+ALMs:                               23,607 / 212,480 ( 11 % )
+LABs:                               2,910 / 21,248 ( 14 % )
+M9Ks:                               38 / 1,280 ( 3 % )
+M144Ks:                             12 / 64 ( 19 % )
+block mem bits:                     1,572,288 / 21,233,664 ( 7 % )
+block mem implementation bits:      2,119,680 / 21,233,664 ( 10 % )
+DSPs:                               0 / 1,024 ( 0 % )
+
+Peak memory used: 2835 Mbytes
+
+*** Timing requirements were not met. ***
+######################################################################
+
+touch ex_loop_slowdowns_wrp.c
+cp ex_loop_slowdowns_wrp.c ex_loop_slowdowns_hw.c
+gcc 	 -fopenmp -DCARTE_EX_MODE_HW -I .  -I /opt/srcci/carte54/include -I /opt/srcci/carte54/include/src7   -c -o ex_loop_slowdowns_hw.o ex_loop_slowdowns_hw.c
+objcopy --input binary \
+	    --output  elf64-x86-64 \
+	    --binary-architecture i386 \
+	    --redefine-sym _binary_ex_loop_slowdowns_rbf_start=ex_loop_slowdowns_bts_1 \
+	    --redefine-sym _binary_ex_loop_slowdowns_rbf_size=ex_loop_slowdowns_bts_size \
+	    --rename-section .data=.bitstream,alloc,load,readonly,data,contents\
+	    --pad-to=$(( $(stat -L --format="%b * %B" ex_loop_slowdowns.rbf) )) \
+	    ex_loop_slowdowns.rbf bts_ex_loop_slowdowns.o
+MAP_FPGA_Config_t > fpga1_ex_loop_slowdowns.c
+DEFINES="\
+	    -DMAPTYPE=$TARGET_MAP \
+	    -DFPGANO=1 \
+	    -DMAPFUNC=ex_loop_slowdowns \
+	    -DRPF_SIZE=$(( ($(stat -L --format %s ex_loop_slowdowns.rbf) + 127) & 0xFFFFFF00 ))\
+	"; \
+	gcc 	 -fopenmp -DCARTE_EX_MODE_HW -I .  -I /opt/srcci/carte54/include -I /opt/srcci/carte54/include/src7   -c  $DEFINES -c -o fpga1_ex_loop_slowdowns.o fpga1_ex_loop_slowdowns.c
+ld  \
+	    -r fpga1_ex_loop_slowdowns.o bts_ex_loop_slowdowns.o --defsym=_ex_loop_slowdowns_bts_2=0 -o ex_loop_slowdowns.o
+rm -f fpga1_ex_loop_slowdowns.o fpga1_ex_loop_slowdowns.c bts_ex_loop_slowdowns.o
+-- explicit link hw
+gcc	  -fopenmp  main.o ex_loop_slowdowns_hw.o ex_loop_slowdowns.o   -L /opt/srcci/carte54/lib -ldl -Wl,-Tbitstream.lds -ldl -lsrc -lsrcutil  -lstdc++ -lm -lpthread -lrt -lmapwrapper -lsnap-mt -lsnap -lslotmgr -lsrc16psw -o ex_loop_slowdowns.hw
+ln -sf ex_loop_slowdowns.hw ex_loop_slowdowns
+make[1]: Leaving directory `/export/KU/kuclass05/rc/HW04_source_files/loop_slowdowns_v3'

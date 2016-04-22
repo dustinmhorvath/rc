@@ -1,0 +1,26 @@
+-- Nonstandard AppRules are being used
+-- MAKIN: /opt/srcci/comp/lib/AppRules.make
+-- Warning: debug execution mode has been renamed dbg
+make execution_mode=dbg 
+-- Nonstandard AppRules are being used
+-- MAKIN: /opt/srcci/comp/lib/AppRules.make
+make[1]: Entering directory `/export/KU/kuclass05/rc/HW04_source_files/loop_slowdowns_v1'
+gcc 	 -fopenmp -DCARTE_EX_MODE_DBG -I .  -I /opt/srcci/carte54/include -I /opt/srcci/carte54/include/src7   -c -o main.o main.c
+mcc -log  -macropath /opt/srcci/carte54/lib/macros -srcinfopath /opt/srcci/carte54/lib/macros/map_m/carte.info:/opt/srcci/carte54/lib/macros/map_m/src_ieee_v1.info -maptarget map_m     -DCARTE_EX_MODE_DBG -I .  -I /opt/srcci/carte54/include -I /opt/srcci/carte54/include/src7   -user_debug ex_loop_slowdowns.mc
+ Debug source code generation 
+
+Inizio Release 
+Copyright 2002, SRC Computers, LLC  All Rights Reserved.
+
+######################################################################
+##################        INNER LOOP SUMMARY      ####################
+loop on line 17:
+    clocks per iteration:    1
+    pipeline depth:         28
+######################################################################
+
+gcc 	 -fopenmp -DCARTE_EX_MODE_DBG -I .  -I /opt/srcci/carte54/include -I /opt/srcci/carte54/include/src7    -c -o ex_loop_slowdowns_dbg.o ex_loop_slowdowns_dbg.c
+-- explicit link dbg
+gcc	  -fopenmp  main.o ex_loop_slowdowns_dbg.o   -L /opt/srcci/carte54/lib -ldl -ldl -lsrc -lsrcutil  -lstdc++ -lm -lpthread -lrt -ldebug -lm -lrt -o ex_loop_slowdowns.dbg
+ln -sf ex_loop_slowdowns.dbg ex_loop_slowdowns
+make[1]: Leaving directory `/export/KU/kuclass05/rc/HW04_source_files/loop_slowdowns_v1'

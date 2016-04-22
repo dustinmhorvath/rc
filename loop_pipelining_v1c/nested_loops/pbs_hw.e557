@@ -1,0 +1,7 @@
+Inizio/MAP Linux Release 5.4(0.0)
+Copyright 2002, SRC Computers, LLC  All Rights Reserved.
+error(mcc/mftn): command '/opt/altera13.0/quartus/bin/quartus_cdb --64bit --read_settings_files=on  --write_settings_files=off ulogic_ex_loop_pipelining -c ulogic_ex_loop_pipelining --merge=on >> par_stdout 2>> par_stderr' returned error code
+make[1]: *** [ex_loop_pipelining_wrp.c] Error 1
+make: *** [hw] Error 2
+qdel: Unauthorized Request  556.bponk1ws.srccomp.dmz
+qdel: Unauthorized Request  557.bponk1ws.srccomp.dmz

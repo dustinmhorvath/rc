@@ -1,0 +1,70 @@
+-- Nonstandard AppRules are being used
+-- MAKIN: /opt/srcci/comp/lib/AppRules.make
+make execution_mode=hw 
+-- Nonstandard AppRules are being used
+-- MAKIN: /opt/srcci/comp/lib/AppRules.make
+make[1]: Entering directory `/export/KU/kuclassInstr/streamed_dma_example'
+gcc 	 -fopenmp -DCARTE_EX_MODE_HW -I .  -I /opt/srcci/carte54/include -I /opt/srcci/carte54/include/src7   -c -o main.o main.c
+mcc -log  -macropath /opt/srcci/carte54/lib/macros -srcinfopath /opt/srcci/carte54/lib/macros/map_m/carte.info:/opt/srcci/carte54/lib/macros/map_m/src_ieee_v1.info -maptarget map_m     -DCARTE_EX_MODE_HW -I .  -I /opt/srcci/carte54/include -I /opt/srcci/carte54/include/src7  ex_dmas.mc
+
+Inizio Release 
+Copyright 2002, SRC Computers, LLC  All Rights Reserved.
+Parallel region starting at line 13 has 3 parallel sections.
+
+######################################################################
+##################        INNER LOOP SUMMARY      ####################
+loop on line 27:
+    clocks per iteration:    1
+    pipeline depth:          4
+######################################################################
+
+ Setting 64-bit Quartus compilation OPTION
+quartus compile 64 bit...
+quartus map 64 bit...
+quartus cdb 64 bit...
+quartus fit 64 bit...
+quartus asm 64 bit...
+quartus sta 64 bit...
+quartus cpf 64 bit...
+
+######################################################################
+###############        PLACE AND ROUTE SUMMARY    ####################
+Registers:                          32,036 / 424,960 ( 8 % )
+Logic utilization:                  37,711 / 424,960 ( 9 % )
+ALMs:                               22,992 / 212,480 ( 11 % )
+LABs:                               2,707 / 21,248 ( 13 % )
+M9Ks:                               40 / 1,280 ( 3 % )
+M144Ks:                             12 / 64 ( 19 % )
+block mem bits:                     1,578,048 / 21,233,664 ( 7 % )
+block mem implementation bits:      2,138,112 / 21,233,664 ( 10 % )
+DSPs:                               4 / 1,024 ( < 1 % )
+
+Peak memory used: 2767 Mbytes
+######################################################################
+
+touch ex_dmas_wrp.c
+cp ex_dmas_wrp.c ex_dmas_hw.c
+gcc 	 -fopenmp -DCARTE_EX_MODE_HW -I .  -I /opt/srcci/carte54/include -I /opt/srcci/carte54/include/src7   -c -o ex_dmas_hw.o ex_dmas_hw.c
+objcopy --input binary \
+	    --output  elf64-x86-64 \
+	    --binary-architecture i386 \
+	    --redefine-sym _binary_ex_dmas_rbf_start=ex_dmas_bts_1 \
+	    --redefine-sym _binary_ex_dmas_rbf_size=ex_dmas_bts_size \
+	    --rename-section .data=.bitstream,alloc,load,readonly,data,contents\
+	    --pad-to=$(( $(stat -L --format="%b * %B" ex_dmas.rbf) )) \
+	    ex_dmas.rbf bts_ex_dmas.o
+MAP_FPGA_Config_t > fpga1_ex_dmas.c
+DEFINES="\
+	    -DMAPTYPE=$TARGET_MAP \
+	    -DFPGANO=1 \
+	    -DMAPFUNC=ex_dmas \
+	    -DRPF_SIZE=$(( ($(stat -L --format %s ex_dmas.rbf) + 127) & 0xFFFFFF00 ))\
+	"; \
+	gcc 	 -fopenmp -DCARTE_EX_MODE_HW -I .  -I /opt/srcci/carte54/include -I /opt/srcci/carte54/include/src7   -c  $DEFINES -c -o fpga1_ex_dmas.o fpga1_ex_dmas.c
+ld  \
+	    -r fpga1_ex_dmas.o bts_ex_dmas.o --defsym=_ex_dmas_bts_2=0 -o ex_dmas.o
+rm -f fpga1_ex_dmas.o fpga1_ex_dmas.c bts_ex_dmas.o
+-- explicit link hw
+gcc	  -fopenmp  main.o ex_dmas_hw.o ex_dmas.o   -L /opt/srcci/carte54/lib -ldl -Wl,-Tbitstream.lds -ldl -lsrc -lsrcutil  -lstdc++ -lm -lpthread -lrt -lmapwrapper -lsnap-mt -lsnap -lslotmgr -lsrc16psw -o ex_dmas.hw
+ln -sf ex_dmas.hw ex_dmas
+make[1]: Leaving directory `/export/KU/kuclassInstr/streamed_dma_example'

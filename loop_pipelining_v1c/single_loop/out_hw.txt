@@ -1,0 +1,69 @@
+-- Nonstandard AppRules are being used
+-- MAKIN: /opt/srcci/comp/lib/AppRules.make
+make execution_mode=hw 
+-- Nonstandard AppRules are being used
+-- MAKIN: /opt/srcci/comp/lib/AppRules.make
+make[1]: Entering directory `/export/KU/kuclass05/rc/loop_pipelining_v1c/single_loop'
+gcc 	  -fopenmp -DCARTE_EX_MODE_HW -I .  -I /opt/srcci/carte54/include -I /opt/srcci/carte54/include/src7   -c -o main.o main.c
+mcc -log -macropath /opt/srcci/carte54/lib/macros -srcinfopath /opt/srcci/carte54/lib/macros/map_m/carte.info:/opt/srcci/carte54/lib/macros/map_m/src_ieee_v1.info -maptarget map_m     -DCARTE_EX_MODE_HW -I .  -I /opt/srcci/carte54/include -I /opt/srcci/carte54/include/src7  ex_loop_pipelining.mc
+
+Inizio Release 
+Copyright 2002, SRC Computers, LLC  All Rights Reserved.
+
+######################################################################
+##################        INNER LOOP SUMMARY      ####################
+loop on line 24:
+    clocks per iteration:    1
+    pipeline depth:         28
+######################################################################
+
+ Setting 64-bit Quartus compilation OPTION
+quartus compile 64 bit...
+quartus map 64 bit...
+quartus cdb 64 bit...
+quartus fit 64 bit...
+quartus asm 64 bit...
+quartus sta 64 bit...
+quartus cpf 64 bit...
+
+######################################################################
+###############        PLACE AND ROUTE SUMMARY    ####################
+Registers:                          30,494 / 424,960 ( 7 % )
+Logic utilization:                  36,194 / 424,960 ( 9 % )
+ALMs:                               22,186 / 212,480 ( 10 % )
+LABs:                               2,662 / 21,248 ( 13 % )
+M9Ks:                               38 / 1,280 ( 3 % )
+M144Ks:                             12 / 64 ( 19 % )
+block mem bits:                     1,572,288 / 21,233,664 ( 7 % )
+block mem implementation bits:      2,119,680 / 21,233,664 ( 10 % )
+DSPs:                               4 / 1,024 ( < 1 % )
+
+Peak memory used: 2751 Mbytes
+######################################################################
+
+touch ex_loop_pipelining_wrp.c
+cp ex_loop_pipelining_wrp.c ex_loop_pipelining_hw.c
+gcc 	  -fopenmp -DCARTE_EX_MODE_HW -I .  -I /opt/srcci/carte54/include -I /opt/srcci/carte54/include/src7   -c -o ex_loop_pipelining_hw.o ex_loop_pipelining_hw.c
+objcopy --input binary \
+	    --output  elf64-x86-64 \
+	    --binary-architecture i386 \
+	    --redefine-sym _binary_ex_loop_pipelining_rbf_start=ex_loop_pipelining_bts_1 \
+	    --redefine-sym _binary_ex_loop_pipelining_rbf_size=ex_loop_pipelining_bts_size \
+	    --rename-section .data=.bitstream,alloc,load,readonly,data,contents\
+	    --pad-to=$(( $(stat -L --format="%b * %B" ex_loop_pipelining.rbf) )) \
+	    ex_loop_pipelining.rbf bts_ex_loop_pipelining.o
+MAP_FPGA_Config_t > fpga1_ex_loop_pipelining.c
+DEFINES="\
+	    -DMAPTYPE=$TARGET_MAP \
+	    -DFPGANO=1 \
+	    -DMAPFUNC=ex_loop_pipelining \
+	    -DRPF_SIZE=$(( ($(stat -L --format %s ex_loop_pipelining.rbf) + 127) & 0xFFFFFF00 ))\
+	"; \
+	gcc 	  -fopenmp -DCARTE_EX_MODE_HW -I .  -I /opt/srcci/carte54/include -I /opt/srcci/carte54/include/src7   -c  $DEFINES -c -o fpga1_ex_loop_pipelining.o fpga1_ex_loop_pipelining.c
+ld  \
+	    -r fpga1_ex_loop_pipelining.o bts_ex_loop_pipelining.o --defsym=_ex_loop_pipelining_bts_2=0 -o ex_loop_pipelining.o
+rm -f fpga1_ex_loop_pipelining.o fpga1_ex_loop_pipelining.c bts_ex_loop_pipelining.o
+-- explicit link hw
+gcc	  -fopenmp  main.o ex_loop_pipelining_hw.o ex_loop_pipelining.o   -L /opt/srcci/carte54/lib -ldl -Wl,-Tbitstream.lds -ldl -lsrc -lsrcutil  -lstdc++ -lm -lpthread -lrt -lmapwrapper -lsnap-mt -lsnap -lslotmgr -lsrc16psw -o ex_loop_pipelining.hw
+ln -sf ex_loop_pipelining.hw ex_loop_pipelining
+make[1]: Leaving directory `/export/KU/kuclass05/rc/loop_pipelining_v1c/single_loop'

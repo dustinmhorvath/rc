@@ -1,0 +1,8 @@
+-- Nonstandard AppRules are being used
+-- MAKIN: /opt/srcci/comp/lib/AppRules.make
+make execution_mode=hw 
+-- Nonstandard AppRules are being used
+-- MAKIN: /opt/srcci/comp/lib/AppRules.make
+make[1]: Entering directory `/export/KU/kuclass05/rc/HW05_source_files/loop_dependencies_v2'
+make[1]: Nothing to be done for `all'.
+make[1]: Leaving directory `/export/KU/kuclass05/rc/HW05_source_files/loop_dependencies_v2'

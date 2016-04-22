@@ -15,26 +15,26 @@ int main (int argc, char *argv[]) {
     if ((res_map = fopen ("res_map", "w")) == NULL) {
         fprintf (stderr, "failed to open file 'res_map'\n");
         exit (1);
-        }
+    }
 
     if ((res_cpu = fopen ("res_cpu", "w")) == NULL) {
         fprintf (stderr, "failed to open file 'res_cpu'\n");
         exit (1);
-        }
+    }
 
     if (argc < 2) {
-	fprintf (stderr, "need number of elements (up to %d) as arg\n", SZ);
-	exit (1);
+		fprintf (stderr, "need number of elements (up to %d) as arg\n", SZ);
+		exit (1);
 	}
 
     if (sscanf (argv[1], "%d", &num) < 1) {
-	fprintf (stderr, "need number of elements (up to %d) as arg\n", SZ);
-	exit (1);
+		fprintf (stderr, "need number of elements (up to %d) as arg\n", SZ);
+		exit (1);
 	}
 
     if (num > SZ) {
-	fprintf (stderr, "need number of elements (up to %d) as arg\n", SZ);
-	exit (1);
+		fprintf (stderr, "need number of elements (up to %d) as arg\n", SZ);
+		exit (1);
 	}
 
     A = (int64_t*) Cache_Aligned_Allocate (SZ * sizeof (int64_t));

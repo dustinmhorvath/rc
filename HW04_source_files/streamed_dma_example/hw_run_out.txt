@@ -1,0 +1,17 @@
+$ ./ex_dmas_hwexec 10
+   
+   Start of Input (CPU-to-MAP)  Stamp:         8 clocks
+   End   of Input (CPU-to-MAP)  Stamp:   1412028 clocks
+
+   Start of Compute             Stamp:         8 clocks
+   End   of Compute             Stamp:   1412032 clocks
+
+   Start of Output (MAP-to-CPU) Stamp:         8 clocks
+   End   of Output (MAP-to-CPU) Stamp:   1412035 clocks
+
+   End                          Stamp:   1412043 clocks
+
+   Input (CPU-to-MAP)            Time:   1412020 clocks
+   Compute                       Time:   1412024 clocks
+   Output (MAP-to-CPU)           Time:   1412027 clocks
+   Total                         Time:   1412043 clocks

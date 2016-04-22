@@ -1,0 +1,6 @@
+main.c: In function 'main':
+main.c:68: warning: passing argument 6 of 'subr' from incompatible pointer type
+main.c:17: note: expected 'int64_t *' but argument is of type 'int64_t **'
+Inizio/MAP Linux Release 5.4(0.0)
+Copyright 2002, SRC Computers, LLC  All Rights Reserved.
+qdel: Unauthorized Request  559.bponk1ws.srccomp.dmz

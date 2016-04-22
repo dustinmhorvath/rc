@@ -1,0 +1,4 @@
+Inizio/MAP Linux Release 5.4(0.0)
+Copyright 2002, SRC Computers, LLC  All Rights Reserved.
+Notice (martello): call to 'streamed_dma_cpu_64_out', line 66, has caused loop pipelining to be disabled
+qdel: Unauthorized Request  596.bponk1ws.srccomp.dmz

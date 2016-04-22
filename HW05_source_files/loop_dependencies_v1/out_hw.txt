@@ -1,0 +1,73 @@
+-- Nonstandard AppRules are being used
+-- MAKIN: /opt/srcci/comp/lib/AppRules.make
+make execution_mode=hw 
+-- Nonstandard AppRules are being used
+-- MAKIN: /opt/srcci/comp/lib/AppRules.make
+make[1]: Entering directory `/export/KU/kuclass05/rc/HW05_source_files/loop_dependencies_v1'
+mcc -log  -macropath /opt/srcci/carte54/lib/macros -srcinfopath /opt/srcci/carte54/lib/macros/map_m/carte.info:/opt/srcci/carte54/lib/macros/map_m/src_ieee_v1.info -maptarget map_m     -DCARTE_EX_MODE_HW -I .  -I /opt/srcci/carte54/include -I /opt/srcci/carte54/include/src7  ex_loop_dependencies.mc
+
+Inizio Release 
+Copyright 2002, SRC Computers, LLC  All Rights Reserved.
+
+######################################################################
+##################        INNER LOOP SUMMARY      ####################
+loop on line 14:
+    clocks per iteration:    1
+    pipeline depth:         33
+######################################################################
+
+there is already a 'ex_loop_dependencies_par' directory from a previous compile
+  dir 'ex_loop_dependencies_par1' will be used instead
+ Setting 64-bit Quartus compilation OPTION
+quartus compile 64 bit...
+quartus map 64 bit...
+quartus cdb 64 bit...
+quartus fit 64 bit...
+quartus asm 64 bit...
+quartus sta 64 bit...
+quartus cpf 64 bit...
+Critical Warning (332148): Timing requirements not met
+
+######################################################################
+###############        PLACE AND ROUTE SUMMARY    ####################
+Registers:                          30,571 / 424,960 ( 7 % )
+Logic utilization:                  36,410 / 424,960 ( 9 % )
+ALMs:                               22,423 / 212,480 ( 11 % )
+LABs:                               2,700 / 21,248 ( 13 % )
+M9Ks:                               41 / 1,280 ( 3 % )
+M144Ks:                             12 / 64 ( 19 % )
+block mem bits:                     1,575,360 / 21,233,664 ( 7 % )
+block mem implementation bits:      2,147,328 / 21,233,664 ( 10 % )
+DSPs:                               4 / 1,024 ( < 1 % )
+
+Peak memory used: 2757 Mbytes
+
+*** Timing requirements were not met. ***
+######################################################################
+
+touch ex_loop_dependencies_wrp.c
+cp ex_loop_dependencies_wrp.c ex_loop_dependencies_hw.c
+gcc 	 -fopenmp -DCARTE_EX_MODE_HW -I .  -I /opt/srcci/carte54/include -I /opt/srcci/carte54/include/src7   -c -o ex_loop_dependencies_hw.o ex_loop_dependencies_hw.c
+objcopy --input binary \
+	    --output  elf64-x86-64 \
+	    --binary-architecture i386 \
+	    --redefine-sym _binary_ex_loop_dependencies_rbf_start=ex_loop_dependencies_bts_1 \
+	    --redefine-sym _binary_ex_loop_dependencies_rbf_size=ex_loop_dependencies_bts_size \
+	    --rename-section .data=.bitstream,alloc,load,readonly,data,contents\
+	    --pad-to=$(( $(stat -L --format="%b * %B" ex_loop_dependencies.rbf) )) \
+	    ex_loop_dependencies.rbf bts_ex_loop_dependencies.o
+MAP_FPGA_Config_t > fpga1_ex_loop_dependencies.c
+DEFINES="\
+	    -DMAPTYPE=$TARGET_MAP \
+	    -DFPGANO=1 \
+	    -DMAPFUNC=ex_loop_dependencies \
+	    -DRPF_SIZE=$(( ($(stat -L --format %s ex_loop_dependencies.rbf) + 127) & 0xFFFFFF00 ))\
+	"; \
+	gcc 	 -fopenmp -DCARTE_EX_MODE_HW -I .  -I /opt/srcci/carte54/include -I /opt/srcci/carte54/include/src7   -c  $DEFINES -c -o fpga1_ex_loop_dependencies.o fpga1_ex_loop_dependencies.c
+ld  \
+	    -r fpga1_ex_loop_dependencies.o bts_ex_loop_dependencies.o --defsym=_ex_loop_dependencies_bts_2=0 -o ex_loop_dependencies.o
+rm -f fpga1_ex_loop_dependencies.o fpga1_ex_loop_dependencies.c bts_ex_loop_dependencies.o
+-- explicit link hw
+gcc	  -fopenmp  main.o ex_loop_dependencies_hw.o ex_loop_dependencies.o   -L /opt/srcci/carte54/lib -ldl -Wl,-Tbitstream.lds -ldl -lsrc -lsrcutil  -lstdc++ -lm -lpthread -lrt -lmapwrapper -lsnap-mt -lsnap -lslotmgr -lsrc16psw -o ex_loop_dependencies.hw
+ln -sf ex_loop_dependencies.hw ex_loop_dependencies
+make[1]: Leaving directory `/export/KU/kuclass05/rc/HW05_source_files/loop_dependencies_v1'

@@ -1,0 +1,14 @@
+main.c: In function 'main':
+main.c:40: warning: passing argument 3 of 'subr' makes pointer from integer without a cast
+main.c:15: note: expected 'int64_t *' but argument is of type 'int64_t'
+main.c: In function 'read_image':
+main.c:79: error: redefinition of 'i'
+main.c:57: note: previous definition of 'i' was here
+main.c:79: error: 'for' loop initial declarations are only allowed in C99 mode
+main.c:79: note: use option -std=c99 or -std=gnu99 to compile your code
+main.c:80: error: 'for' loop initial declarations are only allowed in C99 mode
+main.c:81: warning: passing argument 1 of 'scanf' from incompatible pointer type
+/usr/include/stdio.h:450: note: expected 'const char * __restrict__' but argument is of type 'struct FILE *'
+make[1]: *** [main.o] Error 1
+make: *** [debug] Error 2
+qdel: Unauthorized Request  551.bponk1ws.srccomp.dmz
